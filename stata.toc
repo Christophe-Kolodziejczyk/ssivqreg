@@ -1,7 +1,6 @@
-OFF
-** 
 v 3
 d Christophe Kolodziejczyk, VIVE
 p ssivqreg quantile selection models 
+
 
 
