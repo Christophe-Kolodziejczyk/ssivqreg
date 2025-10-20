@@ -1,0 +1,2 @@
+# ssivqreg
+Stata package ssivqreg
