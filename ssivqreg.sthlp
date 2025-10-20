@@ -41,7 +41,6 @@
 
 
 {phang}{cmd:ssivqreg} allows the use of factor variables.
-**# Bookmark #1
 
 {marker options}{...}
 {title:Options}
@@ -415,4 +414,5 @@ INCLUDE help ssivqreg_ref
 {*:Quantile Selection Models with an application to understanding changes in wage inequality.}
 {*:{it:Econometrica} 85(1): 1-28.}
 {*:{p_end}}
+
 
