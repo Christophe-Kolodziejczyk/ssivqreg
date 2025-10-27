@@ -1,4 +1,5 @@
 *! ssivqreg , v0.0.9 CKOL NIKR PAB, 2025-10-8
+* 2025-10-20 : check for packages moremata and amcmc are installed 
 * 2025-10-15 : check if rho and bstep2 are set  
 * 2025-10-8  : subprogram to pass the algorithms options 
 * 2025-10-5  : sa option includes parameters for the simulated annealing 
@@ -52,6 +53,7 @@ G-Frank (BB7)
 */
 
 program ssivqreg , eclass
+* version 15.0
 
 		if replay() {
                 if "`e(cmd)'"!="ssivqreg" { 
@@ -106,12 +108,11 @@ program ssivqreg , eclass
 		
 		** Check that the moremata package is installed
 		cap findfile lmoremata.mlib , path(`"`c(adopath)'"')
-		if _rc > 0 { 
-			di "{error: Package moremata not installed}"
+		if _rc > 0 {
+			di "{error: The package moremata is not installed!}"
 			error 601
 		}
 		
-
 		marksample touse , zeroweight
 		
 // 		di "sa = `sa'"
@@ -124,7 +125,6 @@ program ssivqreg , eclass
 		local algo : word 1 of `algorithm' 
 		local nalg : word count `profiled' `gmmsivqr' `sa' `saiv' `amcmc' `algo'
 		
-		
 		cap assert `nalg' <= 1
 		if _rc {
 			display "{error: More than one algorithm chosen}"
@@ -132,16 +132,16 @@ program ssivqreg , eclass
 		}
 		local method `profiled' `gmmsivqr' `sa' `saiv' `amcmc' `algo'
 		
-		** Check amcmc is installed if the amcmc algorithm is used 
-		if (inlist("amcmc", "`algo'", "`amcmc'" )) {
+		** Check that the amcmc package is installed
+		if (inlist("amcmc", "`algo'", "`amcmc'")) {
 				cap findfile lamcmc.mlib , path(`"`c(adopath)'"')
-				if _rc > 0 { 
-					di "{error: Package amcmc not installed}"
+				if _rc > 0 {
+					di "{error: amcmc option is selected, but the package amcmc is not installed!}"
 					error 601
-				}			
+				}
 		}
 		
-		
+				
 		/* test if nostderr and vce are both chosen by the user */
 		
 		if ("`stderr'"!="" & "`vce'" !="") {
@@ -210,6 +210,7 @@ program ssivqreg , eclass
 		// Store Weights varname in a local : used by ssivqreg to get the weights
 		if ("`weight'"!="") {
 			local weights `exp'
+			local wtype `weight'
 		}
 		
 		gettoken D Z : select
@@ -286,6 +287,13 @@ program ssivqreg , eclass
 		eret scalar modelType = `r(modelType)'
 		cap eret scalar min_objFunc = `r(min_objFunc)'
 		eret scalar runtime = `r(runtime)'
+// If weights
+		if ("`weight'" !="") {
+				eret scalar sum_weights = `r(sum_weights)'
+				eret scalar sum_weights = `r(sum_weights1)'
+				eret local wtype   = "`wtype'"
+				eret local wexp    = "`exp'"
+		}
 		
 		eret scalar df_r = df_r
 		eret scalar df_m = df_m
@@ -323,7 +331,7 @@ program ssivqreg , eclass
 		eret local plotprocess "e(quantiles) Quantile"  // to be compatible with plotprocess
 		
 		eret local cmdline `"ssivqreg `0'"'
-		eret local cmd "ssivqreg"
+		eret local cmd     "ssivqreg"
 		eret local predict "ssivqreg_p"
 		eret local title = "`title'"
 		eret local xvar  = "`xvar'"

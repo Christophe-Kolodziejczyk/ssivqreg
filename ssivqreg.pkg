@@ -4,12 +4,10 @@ d Estimates quantile selection models with or without endogenous regressors
 d Christophe Kolodziejczyk, VIVE
 
 f ssivqreg.ado 
+f ssivqreg_p
 f ssivqreg.sthlp 
 f ssivqreg_ref.ihlp
 f dgp_ssivqreg.ado
 f lSA.mlib 
 f lssivqreg.mlib 
-
-
-
 
