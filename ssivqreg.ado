@@ -227,21 +227,39 @@ program ssivqreg , eclass
 
 		/* amcmc options */
 		
+		
 		if ("`ndraws'"=="")  local ndraws 5000 5000
 		if ("`nburns'"=="")  local nburns 3000 1000
 		if ("`dampers'"=="") local dampers .75 1
 		if ("`arate'"=="")   local arate   0.5 0.234
 		if ("`nrho'"=="")    local nrho 10 
 		
+		
 // #############################################################################
 // 	    Parsing the Method options 
 // #############################################################################
 
+		
+		if ( ("`sa'" !="" | "`saiv'" !="") & "`algorithm'"=="" ) local algorithm sa // , nrho(`nrho') nalpha(`nalpha')
+
+// 		di "algorithm = `algorithm'"
+		
 		parseAlgoOptions `algorithm'
 		foreach s in `s(opts)' {
-			local `s' `s(`s')' // Don't overwrite the values already given
+			if ("`s'"!="") local `s' `s(`s')' // Don't overwrite the values already given
 			// di "`s' = ``s''"
 		}
+		
+// 		sret li
+// 		di `" s(opts) = `s(opts)'"'
+		
+/* 
+		if ("`ndraws'"=="")  local ndraws 5000 5000
+		if ("`nburns'"=="")  local nburns 3000 1000
+		if ("`dampers'"=="") local dampers .75 1
+		if ("`arate'"=="")   local arate   0.5 0.234
+		if ("`nrho'"=="")    local nrho 10 
+*/
 		
 		// error 101
 		/*
@@ -500,5 +518,6 @@ prog parseAlgoOptions , sclass
 		}
 		sreturn local opts = "`opts'"
 
+		
 
 end
